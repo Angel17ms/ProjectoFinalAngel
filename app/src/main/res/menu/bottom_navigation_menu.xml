@@ -4,15 +4,18 @@
         android:id="@+id/bot_home"
         android:title="@string/inicio"
         android:icon="@drawable/home"
+        android:fontFamily="@font/marko_one"
         />
     <item
-        android:id="@+id/generos"
+        android:id="@+id/generos2"
         android:icon="@drawable/genders"
-        android:title="@string/generos" />
+        android:title= "@string/generos"
+        android:fontFamily="@font/marko_one"/>
 
     <item
-        android:id="@+id/favoritos"
+        android:id="@+id/favoritos2"
         android:icon="@drawable/ic_favorite"
         android:title="@string/favoritos"
+        android:fontFamily="@font/marko_one"
         />
 </menu>

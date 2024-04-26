@@ -1,5 +1,6 @@
 package com.example.projectofinal.API
 
+import com.example.projectofinal.Responses.GenresResponse
 import com.example.projectofinal.Responses.MoviesResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -13,4 +14,10 @@ interface InterfaceAPI {
         @Query("language") language: String,
         @Query("page") page: Int
     ): MoviesResponse
+
+    @GET("genre/movie/list")
+    suspend fun getMovieGenres(
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String
+    ): GenresResponse
 }

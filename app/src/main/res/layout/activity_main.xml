@@ -41,8 +41,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginRight="20dp"
-                android:fontFamily="serif"
+                android:fontFamily="@font/marko_one"
                 android:textAlignment="viewEnd"
+                android:textAllCaps="true"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 tools:ignore="RtlCompat" />
@@ -78,16 +79,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:menu="@menu/bottom_navigation_menu"
-        app:itemTextColor="@color/white"
-        android:background="@color/black" />
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black"
+            app:itemTextAppearanceActiveBoldEnabled="false"
+            app:itemTextColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/bottom_navigation_menu" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

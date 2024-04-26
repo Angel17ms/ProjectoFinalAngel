@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var mAuth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
+    private lateinit var bottomNavigation: BottomNavigationView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,17 +32,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val bottomNavigation = findViewById<BottomNavigationView>(
-            R.id.bottomNavigation
-        )
-        bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
-
-
-
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-
 
         drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
         val toggle = ActionBarDrawerToggle(
@@ -53,9 +46,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
-
-        val navigationView = findViewById<NavigationView>(R.id.nav_view)
-        navigationView.setNavigationItemSelectedListener(this)
 
         switchFragment(FragmentHome())
 
@@ -77,6 +67,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
         }
 
+        drawerLayout = binding.drawerLayout
+        bottomNavigation = binding.bottomNavigation
+
+        // Configurar listeners
+        val navigationView = binding.navView
+        navigationView.setNavigationItemSelectedListener(this)
+        bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+
     }
 
     private fun switchFragment(fragment: Fragment) {
@@ -90,33 +88,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.home -> {
                 switchFragment(FragmentHome())
             }
-
-
             R.id.generos -> {
                 switchFragment(FragmentGenders())
-
             }
-
             R.id.favoritos -> {
                 switchFragment(FragmentFavorites())
-
             }
-
-
             R.id.perfil -> {
                 switchFragment(FragmentProfile())
-
             }
-
             R.id.nav_logout ->{
-
+                // Agrega aquí la lógica para cerrar sesión
             }
-
         }
         // Cierra el drawer después de hacer la selección
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
+
+
 
     private val onNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -125,11 +115,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     switchFragment(FragmentHome())
                     return@OnNavigationItemSelectedListener true
                 }
-                R.id.generos -> {
+                R.id.generos2 -> {
                     switchFragment(FragmentGenders())
                     return@OnNavigationItemSelectedListener true
                 }
-                R.id.favoritos -> {
+                R.id.favoritos2 -> {
                     switchFragment(FragmentFavorites())
                     return@OnNavigationItemSelectedListener true
                 }
