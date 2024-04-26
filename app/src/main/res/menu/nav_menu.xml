@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/home"
+        android:title="@string/inicio"
+        android:icon="@drawable/home"/>
+    <item
+        android:id="@+id/generos"
+        android:icon="@drawable/genders"
+        android:title="@string/generos" />
+
+    <item
+        android:id="@+id/favoritos"
+        android:icon="@drawable/ic_favorite"
+        android:title="@string/favoritos"
+        />
+
+    <item
+        android:id="@+id/perfil"
+        android:title="@string/perfil"
+        android:icon="@drawable/account"
+        />
+
+    <item android:title="">
+        <menu>
+            <item
+                android:id="@+id/nav_logout"
+                android:title="@string/cerrar_session"
+                android:icon="@drawable/logout"/>
+        </menu>
+    </item>
+
+</menu>
