@@ -20,4 +20,12 @@ interface InterfaceAPI {
         @Query("api_key") apiKey: String,
         @Query("language") language: String
     ): GenresResponse
+
+    @GET("discover/movie")
+    suspend fun getMoviesByGenre(
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String,
+        @Query("with_genres") genreId: Int,
+        @Query("page") page: Int
+    ): MoviesResponse
 }

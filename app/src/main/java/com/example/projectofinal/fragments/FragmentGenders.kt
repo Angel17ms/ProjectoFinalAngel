@@ -18,12 +18,17 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.Locale
 import android.widget.SearchView.OnQueryTextListener
 import com.example.projectofinal.Adapters.GenderAdapter
+import com.example.projectofinal.Adapters.OnClickListener
+import com.example.projectofinal.Responses.GenresResponse
+import com.example.projectofinal.Responses.MoviesResponse
 import com.example.projectofinal.databinding.FragmentGendersBinding
 
 
-class FragmentGenders : Fragment() {
+class FragmentGenders : Fragment(), OnClickListener {
     private lateinit var binding: FragmentGendersBinding
     private lateinit var adapter: GenderAdapter
+    private lateinit var listener: GenreListener
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,7 +39,7 @@ class FragmentGenders : Fragment() {
         val idioma = Locale.getDefault().language
 
         recicler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        adapter = GenderAdapter()
+        adapter = GenderAdapter(this)
         recicler.adapter = adapter
 
         val retrofit = Retrofit.Builder()
@@ -67,6 +72,26 @@ class FragmentGenders : Fragment() {
 
     companion object {
         private const val API_KEY = "51ef9ea30d062ebf77af05ce4a8eebed"
+    }
+
+    override fun onClick(movie: MoviesResponse.Movie) {
+        TODO("Not yet implemented")
+    }
+
+    override fun setGenereListener(listener: GenreListener) {
+        this.listener = listener
+
+    }
+
+    override fun onClick(gender: GenresResponse.MovieGenre) {
+        if (listener != null)
+            listener.onGeneroSeleccionado(gender)
+    }
+
+
+
+    override fun setMovieListener(listener: MovieListener) {
+        TODO("Not yet implemented")
     }
 }
 

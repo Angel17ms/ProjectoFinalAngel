@@ -8,18 +8,25 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import com.example.projectofinal.Adapters.OnClickListener
 import com.example.projectofinal.R
+import com.example.projectofinal.Responses.GenresResponse
+import com.example.projectofinal.Responses.MoviesResponse
 import com.example.projectofinal.databinding.ActivityMainBinding
+import com.example.projectofinal.fragments.DetailsFragment
 import com.example.projectofinal.fragments.FragmentFavorites
 import com.example.projectofinal.fragments.FragmentGenders
 import com.example.projectofinal.fragments.FragmentHome
 import com.example.projectofinal.fragments.FragmentProfile
+import com.example.projectofinal.fragments.GenreListener
+import com.example.projectofinal.fragments.MovieListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
+    GenreListener, MovieListener {
     private lateinit var binding: ActivityMainBinding
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var mAuth: FirebaseAuth
@@ -47,8 +54,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        switchFragment(FragmentHome())
-
         mAuth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
@@ -75,6 +80,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navigationView.setNavigationItemSelectedListener(this)
         bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
+
+        val frg = FragmentHome()
+        frg.setMovieListener(this)
+        switchFragment(frg)
+
     }
 
     private fun switchFragment(fragment: Fragment) {
@@ -86,10 +96,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.home -> {
-                switchFragment(FragmentHome())
+                val frg = FragmentHome()
+                frg.setMovieListener(this)
+                switchFragment(frg)
             }
             R.id.generos -> {
-                switchFragment(FragmentGenders())
+                val frg = FragmentGenders()
+                frg.setGenereListener(this)
+                switchFragment(frg)
             }
             R.id.favoritos -> {
                 switchFragment(FragmentFavorites())
@@ -112,11 +126,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.bot_home -> {
-                    switchFragment(FragmentHome())
+                    val frg = FragmentHome()
+                    frg.setMovieListener(this)
+                    switchFragment(frg)
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.generos2 -> {
-                    switchFragment(FragmentGenders())
+                    val frg = FragmentGenders()
+                    frg.setGenereListener(this)
+                    switchFragment(frg)
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.favoritos2 -> {
@@ -127,6 +145,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             false
         }
+
+    override fun onGeneroSeleccionado(genero: GenresResponse.MovieGenre) {
+        switchFragment(FragmentHome.newInstance(genero))
+    }
+
+    override fun onPeliculaSeleccionado(pelicula: MoviesResponse.Movie) {
+        switchFragment(DetailsFragment.newInstance(pelicula))
+    }
 
 
 }

@@ -6,14 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.projectofinal.Responses.MoviesResponse
 import com.example.projectofinal.R
+import com.example.projectofinal.Responses.GenresResponse
 import com.example.projectofinal.databinding.ItemMovieBinding
 import java.util.Locale
 
-class MovieAdapter : RecyclerView.Adapter<MovieAdapter.ViewHolder>(), Filterable {
+class MovieAdapter(private val listener: OnClickListener) : RecyclerView.Adapter<MovieAdapter.ViewHolder>(), Filterable {
 
     private var movies: MutableList<MoviesResponse.Movie> = mutableListOf()
     private var filteredMovies: MutableList<MoviesResponse.Movie> = mutableListOf()
@@ -21,6 +23,13 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.ViewHolder>(), Filterable
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val binding = ItemMovieBinding.bind(view)
+
+        fun setListener(movie: MoviesResponse.Movie){
+            binding.root.setOnClickListener() {
+                listener.onClick(movie)
+            }
+
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -32,6 +41,7 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.ViewHolder>(), Filterable
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val movie = filteredMovies[position] // Usar la lista filtrada para obtener los elementos
         with(holder) {
+            setListener(movie)
             binding.textView2.text = movie.title
 
             Glide.with(itemView)

@@ -4,24 +4,25 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Filter
-import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.example.projectofinal.Responses.MoviesResponse
 import com.example.projectofinal.R
 import com.example.projectofinal.Responses.GenresResponse
 import com.example.projectofinal.databinding.ItemGendersBinding
-import com.example.projectofinal.databinding.ItemMovieBinding
-import java.util.Locale
 
-class GenderAdapter : RecyclerView.Adapter<GenderAdapter.ViewHolder>() {
+class GenderAdapter( private val listener: OnClickListener) : RecyclerView.Adapter<GenderAdapter.ViewHolder>() {
 
     private var genders: MutableList<GenresResponse.MovieGenre> = mutableListOf()
     private lateinit var context: Context
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val binding = ItemGendersBinding.bind(view)
+
+        fun setListener(gender: GenresResponse.MovieGenre){
+            binding.root.setOnClickListener() {
+                listener.onClick(gender)
+            }
+
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -33,6 +34,7 @@ class GenderAdapter : RecyclerView.Adapter<GenderAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val genre = genders[position] // Usar la lista filtrada para obtener los elementos
         with(holder) {
+            setListener(genre)
             binding.textView2.text = genre.name
 
         }
