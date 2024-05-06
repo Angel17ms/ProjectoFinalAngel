@@ -18,4 +18,7 @@
     <string name="cerrar_session">Cerrar session</string>
     <string name="buscador">Buscador</string>
     <string name="nombre">Nombre</string>
+    <string name="sinopsis_n">Sinopsis:\n</string>
+    <string name="fecha_de_estreno">Fecha de estreno: </string>
+    <string name="idioma_original">"Idioma original: "</string>
 </resources>

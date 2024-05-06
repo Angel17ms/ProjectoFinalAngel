@@ -25,7 +25,7 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
+class MainActivity : AppCompatActivity(),
     GenreListener, MovieListener {
     private lateinit var binding: ActivityMainBinding
     private lateinit var drawerLayout: DrawerLayout
@@ -39,20 +39,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-
-        drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
-        val toggle = ActionBarDrawerToggle(
-            this,
-            drawerLayout,
-            toolbar,
-            R.string.open_nav,
-            R.string.close_nav
-        )
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
 
         mAuth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
@@ -75,9 +62,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawerLayout = binding.drawerLayout
         bottomNavigation = binding.bottomNavigation
 
-        // Configurar listeners
-        val navigationView = binding.navView
-        navigationView.setNavigationItemSelectedListener(this)
+
         bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
 
@@ -91,33 +76,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment, fragment)
             .commit()
-    }
-
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.home -> {
-                val frg = FragmentHome()
-                frg.setMovieListener(this)
-                switchFragment(frg)
-            }
-            R.id.generos -> {
-                val frg = FragmentGenders()
-                frg.setGenereListener(this)
-                switchFragment(frg)
-            }
-            R.id.favoritos -> {
-                switchFragment(FragmentFavorites())
-            }
-            R.id.perfil -> {
-                switchFragment(FragmentProfile())
-            }
-            R.id.nav_logout ->{
-                // Agrega aquí la lógica para cerrar sesión
-            }
-        }
-        // Cierra el drawer después de hacer la selección
-        drawerLayout.closeDrawer(GravityCompat.START)
-        return true
     }
 
 
@@ -138,7 +96,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.favoritos2 -> {
-                    switchFragment(FragmentFavorites())
+                    val frg = FragmentFavorites()
+                    frg.setMovieListener(this)
+                    switchFragment(frg)
                     return@OnNavigationItemSelectedListener true
                 }
 
@@ -147,7 +107,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
     override fun onGeneroSeleccionado(genero: GenresResponse.MovieGenre) {
-        switchFragment(FragmentHome.newInstance(genero))
+        val frg = FragmentHome.newInstance(genero)
+        frg.setMovieListener(this)
+        switchFragment(frg)
     }
 
     override fun onPeliculaSeleccionado(pelicula: MoviesResponse.Movie) {

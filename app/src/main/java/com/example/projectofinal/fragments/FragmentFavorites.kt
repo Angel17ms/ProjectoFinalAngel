@@ -5,56 +5,137 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.projectofinal.R
+import androidx.appcompat.widget.SearchView
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.projectofinal.API.InterfaceAPI
+import com.example.projectofinal.Adapters.MovieAdapter
+import com.example.projectofinal.databinding.FragmentHomeBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.util.Locale
+import android.widget.SearchView.OnQueryTextListener
+import com.example.projectofinal.Adapters.OnClickListener
+import com.example.projectofinal.Responses.GenresResponse
+import com.example.projectofinal.Responses.MoviesResponse
+import com.example.projectofinal.databinding.FragmentFavoritesBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [FragmentFavorites.newInstance] factory method to
- * create an instance of this fragment.
- */
-class FragmentFavorites : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class FragmentFavorites : Fragment(), OnClickListener {
+    private lateinit var binding: FragmentFavoritesBinding
+    private lateinit var adapter: MovieAdapter
+    private lateinit var listener: MovieListener
+    val firestore = FirebaseFirestore.getInstance()
+    val userId = FirebaseAuth.getInstance().currentUser?.uid
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
+
+
+    companion object {
+
+        private const val API_KEY = "51ef9ea30d062ebf77af05ce4a8eebed"
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favorites, container, false)
+        binding = FragmentFavoritesBinding.inflate(inflater, container, false)
+        val recicler = binding.recicler
+        val idioma = Locale.getDefault().language
+
+        recicler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        adapter = MovieAdapter(this)
+        recicler.adapter = adapter
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://api.themoviedb.org/3/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val service = retrofit.create(InterfaceAPI::class.java)
+
+
+
+        obtenerPeliculasFavoritas { ids ->
+            CoroutineScope(Dispatchers.Main).launch {
+
+                getPeliculasPorId(service, idioma, ids)
+            }
+        }
+
+
+
+
+
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FragmentFavorites.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            FragmentFavorites().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    suspend fun getPeliculasPorId(service: InterfaceAPI, idioma: String, ids: List<Int>) {
+        try {
+            // Recorrer cada ID y obtener la película correspondiente
+            for (id in ids) {
+                val response = service.getMovieDetails(id, API_KEY, idioma)
+                val movie = response.body()
+
+                // Verificar si se obtuvo la película correctamente
+                if (response.isSuccessful && movie != null) {
+                    adapter.addMovie(movie)
+                } else {
+                    println("Error al obtener película con ID $id: ${response.message()}")
                 }
             }
+        } catch (e: Exception) {
+            // Manejar errores
+            println("Error: ${e.message}")
+        }
     }
+
+    fun obtenerPeliculasFavoritas(callback: (List<Int>) -> Unit) {
+        userId?.let { userId ->
+            val usuarioRef = firestore.collection("users").document(userId)
+
+            // Obtener la lista de películas favoritas del usuario
+            usuarioRef.get()
+                .addOnSuccessListener { document ->
+                    if (document != null) {
+                        val peliculasFavoritas = document.get("peliculasFavoritas") as? List<Int> ?: emptyList()
+                        callback(peliculasFavoritas)
+                    } else {
+                        callback(emptyList())
+                    }
+                }
+                .addOnFailureListener { e ->
+                    // Manejar errores
+                    println("Error al obtener películas favoritas: ${e.message}")
+                    callback(emptyList())
+                }
+        } ?: callback(emptyList())
+    }
+
+    override fun onClick(movie: MoviesResponse.Movie) {
+        if (listener != null)
+            listener.onPeliculaSeleccionado(movie)
+    }
+
+    override fun onClick(gender: GenresResponse.MovieGenre) {
+        TODO("Not yet implemented")
+    }
+
+    override fun setGenereListener(listener: GenreListener) {
+        TODO("Not yet implemented")
+    }
+
+    override fun setMovieListener(listener: MovieListener) {
+        this.listener = listener
+    }
+
 }
+
+
+

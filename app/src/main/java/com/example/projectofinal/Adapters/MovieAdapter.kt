@@ -64,6 +64,14 @@ class MovieAdapter(private val listener: OnClickListener) : RecyclerView.Adapter
         notifyDataSetChanged()
     }
 
+    fun addMovie(movie: MoviesResponse.Movie) {
+        if (!movies.contains(movie)) {
+            movies.add(movie)
+            filteredMovies.add(movie)
+            notifyDataSetChanged()
+        }
+    }
+
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {

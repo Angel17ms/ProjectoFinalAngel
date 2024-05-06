@@ -4,6 +4,7 @@ import com.example.projectofinal.Responses.GenresResponse
 import com.example.projectofinal.Responses.MoviesResponse
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface InterfaceAPI {
@@ -28,4 +29,11 @@ interface InterfaceAPI {
         @Query("with_genres") genreId: Int,
         @Query("page") page: Int
     ): MoviesResponse
+
+    @GET("movie/{movie_id}")
+    suspend fun getMovieDetails(
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String
+    ): Response<MoviesResponse.Movie>
 }
