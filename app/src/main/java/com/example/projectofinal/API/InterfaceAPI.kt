@@ -36,4 +36,34 @@ interface InterfaceAPI {
         @Query("api_key") apiKey: String,
         @Query("language") language: String
     ): Response<MoviesResponse.Movie>
+
+    @GET("movie/{movie_id}/recommendations")
+    suspend fun getRecommendations(
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String,
+        @Query("page") page: Int
+    ): MoviesResponse
+
+    @GET("movie/top_rated")
+    suspend fun getTopRatedMovies(
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String,
+        @Query("page") page: Int
+    ): MoviesResponse
+
+    @GET("discover/movie")
+    suspend fun getHorrorMovies(
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String,
+        @Query("with_genres") genreId: Int, // ID del género de terror
+        @Query("page") page: Int
+    ): MoviesResponse
+
+    @GET("movie/now_playing")
+    suspend fun getNowPlayingMovies(
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String,
+        @Query("page") page: Int
+    ): MoviesResponse
 }

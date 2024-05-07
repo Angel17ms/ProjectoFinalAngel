@@ -112,6 +112,31 @@ class DetailsFragment : Fragment() {
             quitarPeliculaFavorita(movie.id)
         }
 
+        userId?.let { userId ->
+            val usuarioRef = firestore.collection("users").document(userId)
+            usuarioRef.get()
+                .addOnSuccessListener { document ->
+                    if (document != null) {
+                        val peliculasFavoritas = document["peliculasFavoritas"] as? List<Int>
+                        if (peliculasFavoritas != null) {
+                            for (id in peliculasFavoritas) {
+                                if (id == movie.id) {
+                                    binding.favOff.visibility = View.INVISIBLE
+                                    binding.favOn.visibility = View.VISIBLE
+                                    return@addOnSuccessListener
+                                } else {
+                                    binding.favOff.visibility = View.VISIBLE
+                                    binding.favOn.visibility = View.INVISIBLE
+                                }
+                            }
+                        }
+                    }
+                }
+                .addOnFailureListener { e ->
+                    // Manejar errores de lectura de datos
+                }
+        }
+
 
 
         return binding.root

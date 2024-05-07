@@ -19,6 +19,7 @@ import com.example.projectofinal.fragments.FragmentGenders
 import com.example.projectofinal.fragments.FragmentHome
 import com.example.projectofinal.fragments.FragmentProfile
 import com.example.projectofinal.fragments.GenreListener
+import com.example.projectofinal.fragments.MainFragment
 import com.example.projectofinal.fragments.MovieListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
@@ -66,9 +67,15 @@ class MainActivity : AppCompatActivity(),
         bottomNavigation.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
 
-        val frg = FragmentHome()
+        val frg = MainFragment()
         frg.setMovieListener(this)
         switchFragment(frg)
+
+        binding.btnToggleDrawer.setOnClickListener {
+            val frg = FragmentHome()
+            frg.setMovieListener(this)
+            switchFragment(frg)
+        }
 
     }
 
@@ -84,7 +91,7 @@ class MainActivity : AppCompatActivity(),
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.bot_home -> {
-                    val frg = FragmentHome()
+                    val frg = MainFragment()
                     frg.setMovieListener(this)
                     switchFragment(frg)
                     return@OnNavigationItemSelectedListener true
