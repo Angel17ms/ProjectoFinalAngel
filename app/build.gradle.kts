@@ -42,7 +42,9 @@ android {
 dependencies {
 
     implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
+    implementation("com.google.firebase:firebase-analytics:21.5.1")
     implementation ("com.google.firebase:firebase-firestore-ktx:23.0.0")
+    implementation("com.google.android.gms:play-services-ads:22.6.0")
     implementation ("com.squareup.picasso:picasso:2.71828")
     implementation ("com.github.bumptech.glide:glide:4.12.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")

@@ -1,7 +1,9 @@
 package com.example.projectofinal.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
@@ -21,6 +23,10 @@ import com.example.projectofinal.fragments.FragmentProfile
 import com.example.projectofinal.fragments.GenreListener
 import com.example.projectofinal.fragments.MainFragment
 import com.example.projectofinal.fragments.MovieListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -33,6 +39,7 @@ class MainActivity : AppCompatActivity(),
     private lateinit var mAuth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
     private lateinit var bottomNavigation: BottomNavigationView
+    private lateinit var mAdView: AdView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,6 +84,16 @@ class MainActivity : AppCompatActivity(),
             switchFragment(frg)
         }
 
+        MobileAds.initialize(this)
+        mAdView = findViewById(R.id.adView)
+
+        val adRequest = AdRequest.Builder().build()
+
+        mAdView.loadAd(adRequest)
+
+
+
+
     }
 
     private fun switchFragment(fragment: Fragment) {
@@ -120,7 +137,9 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onPeliculaSeleccionado(pelicula: MoviesResponse.Movie) {
-        switchFragment(DetailsFragment.newInstance(pelicula))
+        val intent = Intent(this, DetailsActivity::class.java)
+        intent.putExtra("pelicula", pelicula)
+        startActivity(intent)
     }
 
 
