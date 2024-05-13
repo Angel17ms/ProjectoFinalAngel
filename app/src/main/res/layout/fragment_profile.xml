@@ -1,14 +1,93 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.FragmentProfile">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="110dp"
+    android:layout_marginBottom="80dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activities.MainActivity">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/textViewNombre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/nombre"
+        android:textColor="@color/white" />
 
-</FrameLayout>
+    <EditText
+        android:id="@+id/editTextNombre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewNombre"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:enabled="false"
+        android:inputType="text"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/textViewCorreo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextNombre"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/correo_electr_nico"
+        android:textColor="@color/white" />
+
+    <EditText
+        android:id="@+id/editTextCorreo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewCorreo"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:enabled="false"
+        android:inputType="text"
+        android:textColor="@color/white" />
+
+
+    <TextView
+        android:id="@+id/textViewPass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextCorreo"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/correo_electr_nico"
+        android:textColor="@color/white" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tiPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:cornerRadius="16dp"
+        app:endIconMode="password_toggle"
+        android:layout_below="@id/textViewPass"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black"
+            android:textColor="@color/white"
+            android:inputType="textPassword"
+            android:enabled="false"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/botonCerrarSesion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tiPassword"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:text="@string/cerrar_sesi_n"/>
+
+</RelativeLayout>

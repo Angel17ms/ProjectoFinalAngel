@@ -125,6 +125,11 @@ class MainActivity : AppCompatActivity(),
                     switchFragment(frg)
                     return@OnNavigationItemSelectedListener true
                 }
+                R.id.profile -> {
+                    val frg = FragmentProfile()
+                    switchFragment(frg)
+                    return@OnNavigationItemSelectedListener true
+                }
 
             }
             false

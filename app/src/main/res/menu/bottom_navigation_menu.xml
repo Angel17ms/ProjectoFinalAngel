@@ -18,4 +18,10 @@
         android:title="@string/favoritos"
         android:fontFamily="@font/marko_one"
         />
+    <item
+        android:id="@+id/profile"
+        android:icon="@drawable/account"
+        android:title="@string/perfil"
+        android:fontFamily="@font/marko_one"
+        />
 </menu>

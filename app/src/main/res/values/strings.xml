@@ -21,4 +21,6 @@
     <string name="sinopsis_n">Sinopsis:\n</string>
     <string name="fecha_de_estreno">"Fecha de estreno: "</string>
     <string name="idioma_original">"Idioma original: "</string>
+    <string name="cerrar_sesi_n">Cerrar Sesión</string>
+    <string name="correo_electr_nico">Correo electrónico</string>
 </resources>
