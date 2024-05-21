@@ -23,4 +23,6 @@
     <string name="idioma_original">"Idioma original: "</string>
     <string name="cerrar_sesi_n">Cerrar Sesión</string>
     <string name="correo_electr_nico">Correo electrónico</string>
+    <string name="elenco">Elenco:\n</string>
+    <string name="duracion">Duracion: </string>
 </resources>

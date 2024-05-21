@@ -8,17 +8,32 @@ import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContentProviderCompat.requireContext
 import com.bumptech.glide.Glide
+import com.example.projectofinal.API.InterfaceAPI
 import com.example.projectofinal.R
+import com.example.projectofinal.Responses.CastResponse
+import com.example.projectofinal.Responses.GenresResponse
 import com.example.projectofinal.Responses.MoviesResponse
 import com.example.projectofinal.databinding.ActivityDetailsBinding
+import com.example.projectofinal.fragments.FragmentFavorites
+import com.example.projectofinal.fragments.FragmentHome
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.util.Locale
 
 class DetailsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailsBinding
     val firestore = FirebaseFirestore.getInstance()
     val userId = FirebaseAuth.getInstance().currentUser?.uid
+    private val API_KEY = "51ef9ea30d062ebf77af05ce4a8eebed"
+    private lateinit var credits : List<CastResponse.ActorResponse>
+    private lateinit var movieDetails : MoviesResponse.Movie
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -114,6 +129,31 @@ class DetailsActivity : AppCompatActivity() {
             onBackPressed()
             finish()
         }
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://api.themoviedb.org/3/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val service = retrofit.create(InterfaceAPI::class.java)
+
+        CoroutineScope(Dispatchers.Main).launch {
+            getcreditos(movie.id, service, Locale.getDefault().language)
+
+            getPeliculasPorId(service, Locale.getDefault().language, movie.id)
+
+            var duracion: String = (movieDetails.runtime / 60).toString()
+            duracion = duracion + "h y " + movieDetails.runtime % 60 + "min"
+            binding.duracion.text = binding.duracion.text.toString() + duracion
+
+            for (cred in credits){
+                if (cred.known_for_department == "Acting"){
+                    binding.elenco.text = binding.elenco.text.toString() + cred.name + ", "
+                }
+            }
+        }
+
+
     }
 
     fun agregarPeliculaFavorita(peliculaId: Int) {
@@ -144,6 +184,30 @@ class DetailsActivity : AppCompatActivity() {
                 .addOnFailureListener { e ->
                     println("Error al quitar la pelicula")
                 }
+        }
+    }
+
+     suspend fun getcreditos(idMovie: Int, service: InterfaceAPI, idioma: String, page: Int = 1) {
+        try {
+            val response = service.getMovieCredits(idMovie, API_KEY, idioma)
+            credits = response.cast
+
+        } catch (e: Exception) {
+            // Manejar errores
+            println("Error: ${e.message}")
+        }
+    }
+
+    suspend fun getPeliculasPorId(service: InterfaceAPI, idioma: String, id: Int) {
+        try {
+
+            val response = service.getMovieDetails(id, API_KEY, idioma)
+            movieDetails = response.body()!!
+
+
+        } catch (e: Exception) {
+            // Manejar errores
+            println("Error: ${e.message}")
         }
     }
 }

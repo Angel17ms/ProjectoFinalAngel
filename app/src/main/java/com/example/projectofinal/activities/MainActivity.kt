@@ -47,6 +47,14 @@ class MainActivity : AppCompatActivity(),
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        MobileAds.initialize(this)
+        mAdView = findViewById(R.id.adView)
+
+        val adRequest = AdRequest.Builder().build()
+
+        mAdView.loadAd(adRequest)
+
+
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         mAuth = FirebaseAuth.getInstance()
@@ -84,12 +92,6 @@ class MainActivity : AppCompatActivity(),
             switchFragment(frg)
         }
 
-        MobileAds.initialize(this)
-        mAdView = findViewById(R.id.adView)
-
-        val adRequest = AdRequest.Builder().build()
-
-        mAdView.loadAd(adRequest)
 
 
 

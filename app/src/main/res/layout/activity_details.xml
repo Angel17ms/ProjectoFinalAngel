@@ -68,7 +68,7 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView6" />
+            app:layout_constraintTop_toBottomOf="@+id/duracion" />
 
         <ImageButton
             android:id="@+id/favOff"
@@ -103,7 +103,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="15dp"
+            android:fontFamily="@font/marko_one"
             android:text="@string/fecha_de_estreno"
+            android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
 
@@ -113,7 +115,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="1dp"
+            android:fontFamily="@font/marko_one"
             android:text="@string/idioma_original"
+            android:textColor="@color/white"
             app:layout_constraintEnd_toStartOf="@+id/imageView3"
             app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
 
@@ -141,6 +145,30 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+        <TextView
+            android:id="@+id/elenco"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/marko_one"
+            android:text="@string/elenco"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+        <TextView
+            android:id="@+id/duracion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/marko_one"
+            android:text="@string/duracion"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

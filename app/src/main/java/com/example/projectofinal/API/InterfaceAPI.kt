@@ -1,5 +1,6 @@
 package com.example.projectofinal.API
 
+import com.example.projectofinal.Responses.CastResponse
 import com.example.projectofinal.Responses.GenresResponse
 import com.example.projectofinal.Responses.MoviesResponse
 import retrofit2.Response
@@ -66,4 +67,11 @@ interface InterfaceAPI {
         @Query("language") language: String,
         @Query("page") page: Int
     ): MoviesResponse
+
+    @GET("movie/{movie_id}/credits")
+    suspend fun getMovieCredits(
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String
+    ): CastResponse
 }
